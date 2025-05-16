@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
 app.use('/auth', require('./controllers/auth'));
 
 // Update the unicorns data resource with your "main" resource
-app.use('/unicorns', require('./controllers/unicorns'));
+app.use('/user', require('./controllers/user'));
 
 
 app.listen(port, () => {

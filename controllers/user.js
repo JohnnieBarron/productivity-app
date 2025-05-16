@@ -5,20 +5,20 @@ const router = express.Router();
 const ensureLoggedIn = require('../middleware/ensure-logged-in');
 
 // This is how we can more easily protect ALL routes for this router
-// router.use(ensureLoggedIn);
+router.use(ensureLoggedIn);
 
-// ALL paths start with '/unicorns'
+// ALL paths start with '/user'
 
 // index action
-// GET /unicorns
+// GET /user
 // Example of a non-protected route
-router.get('/', (req, res) => {
-  res.send('List of all unicorns - not protected');
+router.get('/index', (req, res) => {
+  res.render('user/index.ejs');
 });
 
-// GET /unicorns/new
+// GET /user/new
 // Example of a protected route
-router.get('/new', ensureLoggedIn, (req, res) => {
+router.get('/new', (req, res) => {
   res.send('Create a unicorn!');
 });
 

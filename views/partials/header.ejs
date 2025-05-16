@@ -8,14 +8,16 @@
 </head>
 <body>
   <nav>
-    <a href="/">🏠</a>
     <div>
       
+      
       <% if (user) { %>
+        <a href="/user/index">🏠</a>
         <a href="/unicorns/new">ADD UNICORN</a>
         <a href="/auth/sign-out">SIGN OUT</a>
         <span><%= user.name %></span>
-      <% } else { %>
+        <% } else { %>
+        <a href="/">🏠</a>
         <a href="/auth/sign-up">SIGN UP</a>
         <a href="/auth/sign-in">SIGN IN</a>
       <% } %>
