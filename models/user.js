@@ -9,12 +9,15 @@ const userSchema = new Schema({
     unique: true,
     lowercase: true
   },
-  name: {
+  Name: {
     type: String
   },
   password: {
     type: String,
     required: true,
+  },
+  Goal:{
+    type: String,
   },
 }, {
   // Mongoose will maintain a createdAt & updatedAt property
