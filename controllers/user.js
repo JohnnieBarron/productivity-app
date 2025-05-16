@@ -10,8 +10,7 @@ router.use(ensureLoggedIn);
 // ALL paths start with '/user'
 
 // index action
-// GET /user
-// Example of a non-protected route
+//routes to profile home page
 router.get('/index', (req, res) => {
   res.render('user/index.ejs');
 });
