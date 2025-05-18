@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Goal = require('../models/goals');
 
 // Middleware used to protect routes that need a logged in user
 const ensureLoggedIn = require('../middleware/ensure-logged-in');
@@ -11,14 +12,30 @@ router.use(ensureLoggedIn);
 
 // index action
 //routes to profile home page
-router.get('/index', (req, res) => {
-  res.render('user/index.ejs');
+router.get('/index', async (req, res) => {
+  const goals = await Goal.find({ user: req.user._id });
+  res.render('user/index.ejs', { goals });
 });
 
-// GET /user/new
-// Example of a protected route
+
+// clicked new goal render goal.ejs
 router.get('/new', (req, res) => {
-  res.send('Create a unicorn!');
+  res.render('user/firstGoal.ejs');
 });
+
+// catch the submission
+router.post('/', async (req, res) => {
+     const newGoal = new Goal({
+      name: req.body.name,
+      Type: req.body.Type,
+      user: req.user._id
+     });
+  await newGoal.save();
+
+  res.redirect('/user/index');
+});
+
+
+
 
 module.exports = router;

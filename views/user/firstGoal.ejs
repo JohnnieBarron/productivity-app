@@ -1,0 +1,32 @@
+<%- include('../partials/header.ejs') %>
+
+<body>
+    <p>
+The first step toward self-improvement and becoming your best self is setting a S.M.A.R.T. goal.
+S.M.A.R.T. stands for Specific, Measurable, Achievable, Relevant, and Time-Bound.
+
+I'll guide you through creating your first one. Let's begin with the first step: Specific.
+
+Do you want your first goal to focus on improving your mind or your body?
+(Don't worry if you have goals for both — you can always create more later!)
+    </p>
+
+<form action="/user" method="POST">
+
+    <label for="name">name your goal, remember to be 'Specific' but concise .<br>ex. lose 10lbs, Learn spanish:</label>
+    <input type="text" name="name" id="name" />
+
+    <label for="Type">Goal type:</label>
+           <select id="Type" name="Type">
+            <option selected value="mind">Mind</option>
+            <option value="body">Body</option>
+        </select>
+
+
+     <button type="submit">Add New goal</button>
+</form>
+
+
+</body>
+
+<%- include('../partials/footer.ejs') %>

@@ -6,11 +6,8 @@ const taskSchema = new Schema({
         type: String,
         required: true
     },
-
     notes: String,
-    
     location: String,
-
     dueDate: {
         type: Date,
         required: true,
@@ -19,6 +16,7 @@ const taskSchema = new Schema({
         type: Boolean,
         default: false
     },
+
     repeats: {
         type: Boolean,
         default: false
@@ -27,16 +25,25 @@ const taskSchema = new Schema({
         type: Number,
         enum: ['daily', 'weekly', 'monthly'],
         required: true
-        },
-        timestamps: true,
+        },    
 });
 
 const goalSchema = new Schema({
+    name: String,
     Type: {
         type: String,
         enum: ['mind', 'body'],
         required: true,
     },
-    timestamps: true,
     task: taskSchema,
+        user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    },
+}, {
+  // Mongoose will maintain a createdAt & updatedAt property
+  timestamps: true
 });
+
+module.exports = mongoose.model('Goal', goalSchema);
