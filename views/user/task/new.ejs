@@ -1,0 +1,68 @@
+<%- include('../../partials/header') %>
+
+    <h2>Add a New Task</h2>
+        <h2>Create a New Task</h2>
+
+<form action="/user" method="POST">
+
+    <label for="title">Title:</label>
+    <input type="text" name="title" placeholder="Task Title" required>
+
+    <label for="dueDate">Due Date:</label>
+    <input type="date" name="dueDate" required>
+
+    <label for="notes">Notes:</label>
+    <textarea name="notes" placeholder="Notes (optional)"></textarea>
+    
+    <label for="location">Location:</label>
+    <input type="text" name="location" placeholder="Location (optional)">
+
+
+
+    <label>
+        <input type="checkbox" name="repeats" id="repeatsCheckbox">
+        Repeats
+    </label>
+
+
+    <select name="repeatDuration" id="repeatDurationSelect" required>
+        <option value="">Select repeat interval</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+    </select>
+
+
+    <select name="goalId" required>
+        <option value="">what Goal does this task support?</option>
+        <% goals.forEach(goal => { %>
+            <option value="<%= goal._id %>"><%= goal.name %> (<%= goal.Type %>)</option>
+        <% }) %>
+    </select>
+
+  
+
+
+    <button type="submit">Create Task</button>
+</form>
+
+<script>
+    //Disable repeatDuration unless "Repeats" is checked
+    const repeatsCheckbox = document.getElementById('repeatsCheckbox');
+    const repeatDurationSelect = document.getElementById('repeatDurationSelect');
+
+    function toggleRepeatDuration() {
+        repeatDurationSelect.disabled = !repeatsCheckbox.checked;
+    }
+
+    repeatsCheckbox.addEventListener('change', toggleRepeatDuration);
+    toggleRepeatDuration(); 
+</script>
+
+</form>
+
+
+
+
+
+<%- include('../../partials/footer.ejs') %>

@@ -14,7 +14,7 @@ router.use(ensureLoggedIn);
 //routes to profile home page
 router.get('/index', async (req, res) => {
   const goals = await Goal.find({ user: req.user._id });
-  res.render('user/index.ejs', { goals,  });
+  res.render('user/index.ejs', { goals });
 });
 
 
@@ -33,13 +33,23 @@ router.get('/goalsIndex', async (req, res) => {
 // delete goal
 router.delete('/goals/:id', async (req, res) => {
     await Goal.findByIdAndDelete(req.params.id);
-    res.redirect('user/goals/index.ejs'); 
+    res.redirect('/user/index'); 
 });
 
 
 // render form for new task
-router.get('/newTask', (req, res) => {
-  res.render('user/firstGoal.ejs');
+router.get('/newTask', async (req, res) => {
+  const goals = await Goal.find({ user: req.user._id });
+  res.render('user/task/new.ejs', { goals });
+});
+
+// catch the new task and post it
+router.post('/', async (req, res) => {
+  const goal = await Goal.findById(req.body.goalId)
+  goal.task.push(req.body);
+  await goal.save();
+
+  res.redirect('user/index');
 });
 
 

@@ -6,8 +6,6 @@ const taskSchema = new Schema({
         type: String,
         required: true
     },
-    notes: String,
-    location: String,
     dueDate: {
         type: Date,
         required: true,
@@ -16,7 +14,7 @@ const taskSchema = new Schema({
         type: Boolean,
         default: false
     },
-
+    
     repeats: {
         type: Boolean,
         default: false
@@ -24,8 +22,9 @@ const taskSchema = new Schema({
     repeatDuration: {
         type: Number,
         enum: ['daily', 'weekly', 'monthly'],
-        required: true
-        },    
+    },    
+    notes: String,
+    location: String,
 });
 
 const goalSchema = new Schema({
@@ -35,7 +34,7 @@ const goalSchema = new Schema({
         enum: ['mind', 'body'],
         required: true,
     },
-    task: taskSchema,
+    task: [taskSchema],
         user: {
         type: Schema.Types.ObjectId,
         ref: 'user',
