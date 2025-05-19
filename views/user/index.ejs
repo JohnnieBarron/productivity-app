@@ -4,8 +4,9 @@
     
 <h1>Welcome, <%= user.name %></h1>
 
-    <% if (goals.length > 0) { %>
-        <ul>
+<div class="goals">
+<% if (goals.length > 0) { %>
+        <ul class = 'goals'>
             <% goals.forEach(goal => { %>
             <li>Your goal: <%= goal.name %> (<%= goal.Type %>)</li>
             <% }) %>
@@ -13,10 +14,10 @@
     <% } else { %>
     <p>You have no goals yet.</p>
     <% } %>
+</div>
 
 
-
-<div class = 'activity'>
+<div class = 'taskbar'>
     <h3>todays task</h3>
     <ul>
         <li>test</li>
@@ -24,7 +25,7 @@
         <li>2</li>
         <li>3</li>
     </ul>
-
+</div>
 
 
 
