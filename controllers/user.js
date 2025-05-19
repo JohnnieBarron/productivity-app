@@ -20,14 +20,20 @@ router.get('/index', async (req, res) => {
 
 // clicked new goal render goal.ejs
 router.get('/new', (req, res) => {
-  // set different route for first goal and regular goal creation
-  res.render('user/goal/firstGoal.ejs');
+  // TODO set different route for first goal and regular goal creation
+  res.render('user/goals/firstGoal.ejs');
 });
 
 //index page for goals
 router.get('/goalsIndex', async (req, res) => {
   const goals = await Goal.find({ user: req.user._id });
   res.render('user/goals/index.ejs', { goals });
+});
+
+// delete goal
+router.delete('/goals/:id', async (req, res) => {
+    await Goal.findByIdAndDelete(req.params.id);
+    res.redirect('user/goals/index.ejs'); 
 });
 
 
@@ -37,7 +43,7 @@ router.get('/newTask', (req, res) => {
 });
 
 
-// catch the submission
+// catch the submission new goal
 router.post('/', async (req, res) => {
      const newGoal = new Goal({
       name: req.body.name,

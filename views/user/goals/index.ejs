@@ -3,14 +3,32 @@
 
 <body>
     <% if (goals.length > 0) { %>
-            <ul class = 'goals'>
-                <% goals.forEach(goal => { %>
-                <li>Your goal: <%= goal.name %> (<%= goal.Type %>)</li>
-                <% }) %>
-            </ul>
-        <% } else { %>
+        <ul class='goals'>
+            <% goals.forEach(goal => { %>
+                <li>
+                    <strong>Your goal:</strong> <%= goal.name %> (<%= goal.Type %>)
+
+                    <!-- Delete Goal Button -->
+                    <form action="/user/goals/<%= goal._id %>?_method=DELETE" method="POST"">
+                        <button type="submit">Delete</button>
+                    </form>
+
+
+                    <!-- show task-->
+                    <% if (goal.tasks && goal.tasks.length > 0) { %>
+                        <ul>
+                            <% goal.tasks.forEach(task => { %>
+                                <li>Task: <%= task.name %></li>
+                            <% }) %>
+                        </ul>
+                    <% } %>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
         <p>You have no goals yet.</p>
-        <% } %>
+    <% } %>
 </body>
+
 
 <%- include('../../partials/footer.ejs') %>
