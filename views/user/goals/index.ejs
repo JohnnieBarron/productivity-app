@@ -1,0 +1,16 @@
+<%- include('../../partials/header') %>
+
+
+<body>
+    <% if (goals.length > 0) { %>
+            <ul class = 'goals'>
+                <% goals.forEach(goal => { %>
+                <li>Your goal: <%= goal.name %> (<%= goal.Type %>)</li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+        <p>You have no goals yet.</p>
+        <% } %>
+</body>
+
+<%- include('../../partials/footer.ejs') %>
