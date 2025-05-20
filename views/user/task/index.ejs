@@ -22,15 +22,15 @@
                                 <% } %>
 
                                 <!-- Task Action Buttons -->
-                                <form action="/user/tasks/<%= task._id %>/complete" method="POST" style="display:inline;">
+                                <form action="/user/tasks/<%= task._id %>/complete" method="POST">
                                     <button type="submit">Complete</button>
                                 </form>
 
-                                <form action="/user/tasks/<%= task._id %>/edit" method="GET" style="display:inline;">
+                                <form action="/user/task/<%= task._id %>/edit" method="GET">
                                     <button type="submit">Edit</button>
                                 </form>
 
-                                <form action="/user/tasks/<%= task._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <form action="/user/task/<%= task._id %>?_method=DELETE" method="POST">
                                     <button type="submit">Delete</button>
                                 </form>
                             </li>

@@ -48,10 +48,38 @@ router.post('/newTask', async (req, res) => {
   const goal = await Goal.findById(req.body.goalId)
   goal.task.push(req.body);
   await goal.save();
-
+  
   res.redirect('/user/index');
 });
 
+// response to edit task button
+router.get('/task/:id/edit', async (req, res) => {
+    const taskId = req.params.id;
+    const goals = await Goal.find({ user: req.user._id }); //NOTE all goals for looping
+    const goal = await Goal.findOne({ 'task._id': taskId, user: req.user._id });
+    const task = goal.task.find(t => t._id.toString() === taskId);
+
+    res.render('user/task/edit.ejs', { task, goal, goals });
+});
+
+//send the edit updates to DB
+router.put('/tasks/:id', async (req, res) => {
+  const taskId = req.params.id;
+  const goal = await Goal.findOne({ 'task._id': taskId, user: req.user._id });
+  goal.task.set(req.body);
+  await req.goal.save();
+  res.redirect('/user/task/index');
+});
+
+
+// Delete task
+router.delete('/task/:id', async (req, res) => {
+    const taskId = req.params.id;
+    const goal = await Goal.findOne({ 'task._id': taskId });
+    goal.task = goal.task.filter(task => task._id.toString() !== taskId);
+    await goal.save();
+    res.redirect('/user/task/index'); 
+});
 
 // catch the submission new goal
 router.post('/', async (req, res) => {
@@ -65,11 +93,13 @@ router.post('/', async (req, res) => {
   res.redirect('/user/index');
 });
 
-
+// render Task manager route
 router.get('/task/index', async (req, res) => {
   const goals = await Goal.find({ user: req.user._id });
   res.render('user/task/index.ejs', { goals });
 });
+
+
 
 
 module.exports = router;

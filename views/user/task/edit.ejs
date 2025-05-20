@@ -1,20 +1,20 @@
 <%- include('../../partials/header') %>
 
-    <h2>Add a New Task</h2>
+    <h2>Update Task</h2>
 
-<form action="/user/newTask" method="POST">
+<form action="/user/tasks/<%= task._id %>?_method=PUT" method="POST">
 
     <label for="title">Title:</label>
-    <input type="text" name="title" placeholder="Task Title" required>
+    <input type="text" name="title" value="<%= task.title %>" required>
 
     <label for="dueDate">Due Date:</label>
-    <input type="date" name="dueDate" required>
+    <input type="date" name="dueDate" value="<%= task.dueDate %>" required>
 
     <label for="notes">Notes:</label>
-    <textarea name="notes" placeholder="Notes (optional)"></textarea>
+    <textarea name="notes" placeholder="Notes (optional)"><%= task.notes %></textarea>
     
     <label for="location">Location:</label>
-    <input type="text" name="location" placeholder="Location (optional)">
+    <input type="text" name="location" value="<%= task.location %>">
 
 
 
@@ -42,7 +42,7 @@
   
 
 
-    <button type="submit">Create Task</button>
+    <button type="submit">Update Task</button>
 </form>
 
 <script>
