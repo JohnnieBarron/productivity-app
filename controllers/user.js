@@ -66,7 +66,10 @@ router.post('/', async (req, res) => {
 });
 
 
-
+router.get('/task/index', async (req, res) => {
+  const goals = await Goal.find({ user: req.user._id });
+  res.render('user/task/index.ejs', { goals });
+});
 
 
 module.exports = router;

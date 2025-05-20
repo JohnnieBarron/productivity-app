@@ -1,0 +1,53 @@
+<%- include('../../partials/header') %>
+
+
+<body>
+<% if (goals.length > 0) { %>
+    <ul class="goals">
+        <% goals.forEach(goal => { %>
+            <li>
+                <strong>Your goal:</strong> <%= goal.name %> (<%= goal.Type %>)
+
+                <!-- Show and sort tasks by due date -->
+                <% if (goal.task && goal.task.length > 0) { %>
+                    <% 
+                        let sortedTasks = goal.task.slice().sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+                    %>
+                    <ul class="tasks">
+                        <% sortedTasks.forEach(task => { %>
+                            <li>
+                                <strong>Task:</strong> <%= task.title %>
+                                <% if (task.dueDate) { %>
+                                    <em> — Due: <%= new Date(task.dueDate).toLocaleDateString() %></em>
+                                <% } %>
+
+                                <!-- Task Action Buttons -->
+                                <form action="/user/tasks/<%= task._id %>/complete" method="POST" style="display:inline;">
+                                    <button type="submit">Complete</button>
+                                </form>
+
+                                <form action="/user/tasks/<%= task._id %>/edit" method="GET" style="display:inline;">
+                                    <button type="submit">Edit</button>
+                                </form>
+
+                                <form action="/user/tasks/<%= task._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p>No tasks for this goal.</p>
+                <% } %>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>You have no goals yet.</p>
+<% } %>
+
+
+</body>
+
+
+<%- include('../../partials/footer.ejs') %>

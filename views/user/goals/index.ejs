@@ -12,16 +12,6 @@
                     <form action="/user/goals/<%= goal._id %>?_method=DELETE" method="POST"">
                         <button type="submit">Delete</button>
                     </form>
-
-
-                    <!-- show task-->
-                    <% if (goal.task && goal.task.length > 0) { %>
-                        <ul>
-                            <% goal.task.forEach(task => { %>
-                                <li>Task: <%= task.title %></li>
-                            <% }) %>
-                        </ul>
-                    <% } %>
                 </li>
             <% }) %>
         </ul>
