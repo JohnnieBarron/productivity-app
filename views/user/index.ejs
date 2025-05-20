@@ -19,18 +19,23 @@
 </div>
 
 
-<div class = 'taskbar'>
-    <h3>task</h3>
-    <% if (goals.task) { %>
-            <ul class = 'taskbar'>
-                <% goals.task.forEach(task => { %>
-                <li>Your task: <%= task.name %> (<%= task.Type %>)</li>
-                <% }) %>
-            </ul>
-        <% } else { %>
-        <p>You have no task yet. lets make a <a href="/user/newTask">new task</a></p>
-        <% } %>
-
+<div class='taskbar'>
+    <h3>Tasks</h3>
+    <% if (goals.length > 0) { %>
+        <% goals.forEach(goal => { %>
+            <% if (goal.task && goal.task.length > 0) { %>
+                <ul class='taskbar'>
+                    <% goal.task.forEach(task => { %>
+                        <li>Your task: <%= task.title %> (Due: <%= task.dueDate.toDateString() %>)</li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No tasks for goal "<%= goal.name %>" yet.</p>
+            <% } %>
+        <% }) %>
+    <% } else { %>
+        <p>You have no goals yet. Let's make a <a href="/user/new">new goal</a>.</p>
+    <% } %>
 </div>
 
 

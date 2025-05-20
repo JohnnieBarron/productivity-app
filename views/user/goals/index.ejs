@@ -15,10 +15,10 @@
 
 
                     <!-- show task-->
-                    <% if (goal.tasks && goal.tasks.length > 0) { %>
+                    <% if (goal.task && goal.task.length > 0) { %>
                         <ul>
-                            <% goal.tasks.forEach(task => { %>
-                                <li>Task: <%= task.name %></li>
+                            <% goal.task.forEach(task => { %>
+                                <li>Task: <%= task.title %></li>
                             <% }) %>
                         </ul>
                     <% } %>

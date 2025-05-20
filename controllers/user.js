@@ -44,12 +44,12 @@ router.get('/newTask', async (req, res) => {
 });
 
 // catch the new task and post it
-router.post('/', async (req, res) => {
+router.post('/newTask', async (req, res) => {
   const goal = await Goal.findById(req.body.goalId)
   goal.task.push(req.body);
   await goal.save();
 
-  res.redirect('user/index');
+  res.redirect('/user/index');
 });
 
 
@@ -61,9 +61,10 @@ router.post('/', async (req, res) => {
       user: req.user._id
      });
   await newGoal.save();
-
+  
   res.redirect('/user/index');
 });
+
 
 
 
