@@ -66,8 +66,9 @@ router.get('/task/:id/edit', async (req, res) => {
 router.put('/tasks/:id', async (req, res) => {
   const taskId = req.params.id;
   const goal = await Goal.findOne({ 'task._id': taskId, user: req.user._id });
-  goal.task.set(req.body);
-  await req.goal.save();
+  const task = goal.task.id(taskId);
+  Object.assign(task, req.body);
+  await goal.save();
   res.redirect('/user/task/index');
 });
 
