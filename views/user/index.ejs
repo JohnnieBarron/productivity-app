@@ -1,10 +1,19 @@
 <%- include('../partials/header.ejs') %>
 
+
 <body>
     
 <h1>Welcome, <%= user.name %></h1>
 
+<div class="HP">
+
+    
+    
+
+<div class="left-column">
+
 <div class="goals">
+    <h3>Goals</h3>
 <% if (goals.length > 0) { %>
         <ul class = 'goals'>
             <% goals.forEach(goal => { %>
@@ -39,6 +48,16 @@
     <a href="/user/task/index">Manage my Task</a>
     <a href="/user/newTask">New Task</a>
 </div>
+</div>
+
+    <div class="right-column">
+         <div id='calendar'></div>
+    </div>
+
+
+</div>
+
+
 
 
 
