@@ -46,3 +46,5 @@ const goalSchema = new Schema({
 });
 
 module.exports = mongoose.model('Goal', goalSchema);
+
+//update schems to match calender

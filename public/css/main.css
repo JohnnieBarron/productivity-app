@@ -11,35 +11,24 @@ body {
   }
   
   
-nav,
+nav {
+  background-color: rgb(51, 51, 51);
+  display: flex;
+  padding: 1vmin;
+  justify-content: space-between;
+  
+
+}
+
 footer {
   background-color: rgb(51, 51, 51);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2vmin;
+  padding: 1vmin;
   font-size: 2vmin;
   color: lightslategray;
 }
-
-nav a {
-  /* text-decoration: none;
-  color: slategray;
-  background-color: white;
-  padding: .5vmin;
-  border-radius: 1vmin; */
-
-  &:hover {
-    color: gray;
-    background-color: lightslategray;
-    color: white;
-  }
-}
-
-nav span {
-  font-size: 1.5vmin;
-  color: lightslategray;
-  }
   
 
 main {
@@ -103,7 +92,9 @@ button:hover {
     padding: 1vmin;
 
   }
-
+  .taskbar button{
+    margin: 2px;
+  }
  
  
   .right-column {
