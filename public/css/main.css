@@ -23,11 +23,11 @@ footer {
 }
 
 nav a {
-  text-decoration: none;
+  /* text-decoration: none;
   color: slategray;
   background-color: white;
   padding: .5vmin;
-  border-radius: 1vmin;
+  border-radius: 1vmin; */
 
   &:hover {
     color: gray;
@@ -95,16 +95,23 @@ button:hover {
     width: 40vmin;
   }
 
+  .goals{
+    padding: 1vmin;
+  }
+
+  .taskbar {
+    padding: 1vmin;
+
+  }
+
+ 
+ 
   .right-column {
   width: 100%;
   height: 100%;
   }
 
-  .goals {
-    border-style: solid;
-    border: black;
-    border-radius: .25vmin;
-  }
+ 
 
   .fc .fc-scrollgrid-liquid {
     height: 85%;
