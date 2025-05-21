@@ -6,6 +6,9 @@ const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 6;
 
 // ALL paths start with "/auth"
+router.get('/', (req, res) => {
+  res.render('home.ejs', { error: '' });
+});
 
 // Sign Up Form
 // GET /auth/sign-up
