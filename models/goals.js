@@ -6,10 +6,22 @@ const taskSchema = new Schema({
         type: String,
         required: true
     },
-    dueDate: {
+
+    start: {
         type: Date,
         required: true,
     },
+
+    end: {
+        type: Date,
+        required: true,
+    },
+
+    allDay: {
+        type: Boolean,
+        default: false,
+    },
+    
     isCompleted: {
         type: Boolean,
         default: false
@@ -19,10 +31,12 @@ const taskSchema = new Schema({
         type: Boolean,
         default: false
     },
+
     repeatDuration: {
-        type: Number,
+        type: String,
         enum: ['daily', 'weekly', 'monthly'],
-    },    
+    },  
+
     notes: String,
     location: String,
 });

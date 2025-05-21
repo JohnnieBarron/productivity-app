@@ -14,7 +14,22 @@ router.use(ensureLoggedIn);
 //routes to profile home page
 router.get('/index', async (req, res) => {
   const goals = await Goal.find({ user: req.user._id });
-  res.render('user/index.ejs', { goals });
+  
+  const tasks = goals.flatMap(goal => 
+    goal.task.map(task => ({
+      title: task.title,
+      start: task.start.toISOString(),
+      end: task.end.toISOString(),
+      allDay: task.allDay,
+      isCompleted: task.isCompleted,
+      repeats: task.repeats,
+      repeatDuration: task.repeatDuration,
+      notes: task.notes,
+      location: task.location,
+    }))
+  );
+
+  res.render('user/index.ejs', { goals, tasks });
 });
 
 
@@ -46,6 +61,7 @@ router.get('/newTask', async (req, res) => {
 // catch the new task and post it
 router.post('/newTask', async (req, res) => {
   const goal = await Goal.findById(req.body.goalId)
+  req.body.allDay = req.body.allDay === 'on';
   goal.task.push(req.body);
   await goal.save();
   

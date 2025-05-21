@@ -7,8 +7,13 @@
     <label for="title">Title:</label>
     <input type="text" name="title" placeholder="Task Title" required>
 
-    <label for="dueDate">Due Date:</label>
-    <input type="date" name="dueDate" required>
+    <label for="start">start Date:</label>
+    <input type="date" name="start" required>
+
+    <label for="end">Due Date:</label>
+    <input type="date" name="end" required>
+    
+    
 
     <label for="notes">Notes:</label>
     <textarea name="notes" placeholder="Notes (optional)"></textarea>
@@ -17,6 +22,10 @@
     <input type="text" name="location" placeholder="Location (optional)">
 
 
+    <label>
+        <input type="checkbox" name="allDay" id="allDay">
+        is this an all day event?
+    </label>
 
     <label>
         <input type="checkbox" name="repeats" id="repeatsCheckbox">
@@ -56,6 +65,8 @@
 
     repeatsCheckbox.addEventListener('change', toggleRepeatDuration);
     toggleRepeatDuration(); 
+
+
 </script>
 
 </form>

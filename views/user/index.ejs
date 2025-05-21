@@ -37,7 +37,7 @@
                     <% if (goal.task && goal.task.length > 0) { %>
                         <ul class="taskbar">
                             <% goal.task.forEach(task => { %>
-                                <li>Your task: <%= task.title %> (Due: <%= task.dueDate.toDateString() %>)</li>
+                                <li>Your task: <%= task.title %> (Due: <%= task.end %>)</li>
                             <% }) %>
                         </ul>
                     <% } else { %>
@@ -82,7 +82,7 @@
 
 </div>
 
-
+  
 
 
 
