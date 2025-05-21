@@ -10,45 +10,67 @@
     
     
 
-<div class="left-column">
+    <div class="left-column">
 
-<div class="goals">
-    <h3>Goals</h3>
-<% if (goals.length > 0) { %>
-        <ul class = 'goals'>
-            <% goals.forEach(goal => { %>
-            <li>Your goal: <%= goal.name %> (<%= goal.Type %>)</li>
-            <% }) %>
-        </ul>
-    <% } else { %>
-    <p>You have no goals yet.</p>
-    <% } %>
-
-    <a href="/user/goalsIndex">Manage my goals</a>
-</div>
-
-
-<div class='taskbar'>
-    <h3>Tasks</h3>
-    <% if (goals.length > 0) { %>
-        <% goals.forEach(goal => { %>
-            <% if (goal.task && goal.task.length > 0) { %>
-                <ul class='taskbar'>
-                    <% goal.task.forEach(task => { %>
-                        <li>Your task: <%= task.title %> (Due: <%= task.dueDate.toDateString() %>)</li>
+        <div class="goals">
+            <h3>Select a Goal</h3>
+            <% if (goals.length > 0) { %>
+                <select id="goalSelect">
+                    <option value="">--Choose a Goal--</option>
+                    <% goals.forEach((goal, index) => { %>
+                        <option value="<%= index %>"><%= goal.name %> (<%= goal.Type %>)</option>
                     <% }) %>
-                </ul>
+                </select>
             <% } else { %>
-                <p>No tasks for goal "<%= goal.name %>" yet.</p>
+                <p>You have no goals yet.</p>
             <% } %>
-        <% }) %>
-    <% } else { %>
-        <p>You have no goals yet. Let's make a <a href="/user/new">new goal</a>.</p>
-    <% } %>
-    <a href="/user/task/index">Manage my Task</a>
-    <a href="/user/newTask">New Task</a>
-</div>
-</div>
+            <a href="/user/goalsIndex">Manage my goals</a>
+        </div>
+
+        <div class="taskbar">
+            <h3>Tasks</h3>
+
+            <% goals.forEach((goal, index) => { %>
+                <div class="task-list" data-goal-index="<%= index %>" style="display: none;">
+                    <% if (goal.task && goal.task.length > 0) { %>
+                        <ul class="taskbar">
+                            <% goal.task.forEach(task => { %>
+                                <li>Your task: <%= task.title %> (Due: <%= task.dueDate.toDateString() %>)</li>
+                            <% }) %>
+                        </ul>
+                    <% } else { %>
+                        <p>No tasks for goal "<%= goal.name %>" yet.</p>
+                    <% } %>
+                </div>
+            <% }) %>
+
+            <a href="/user/task/index">Manage my Task</a>
+            <a href="/user/newTask">New Task</a>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const goalSelect = document.getElementById('goalSelect');
+                const taskLists = document.querySelectorAll('.task-list');
+
+                goalSelect?.addEventListener('change', () => {
+                    const selectedIndex = goalSelect.value;
+
+                    taskLists.forEach(list => {
+                        if (list.dataset.goalIndex === selectedIndex) {
+                            list.style.display = 'block';
+                        } else {
+                            list.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+    </div>
+
+
 
     <div class="right-column">
          <div id='calendar'></div>
