@@ -1,16 +1,11 @@
 <%- include('../partials/header.ejs') %>
 
-
 <body>
-    
-<h1>Welcome, <%= user.name %></h1>
+  <div class="container">
+    <h1 class="mb-4">Welcome, <%= user.name %></h1>
 
-<div class="HP">
-
-    
-    
-        <div class="row"></div>
-       <!-- Left Column: Goals and Tasks -->
+    <div class="row">
+      <!-- Left Column: Goals and Tasks -->
       <div class="col-lg-5 mb-4">
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
@@ -60,21 +55,29 @@
         </div>
       </div>
 
-
-
-          <!-- Right Column: Calendar -->
+      <!-- Right Column: Calendar -->
       <div class="col-lg-7">
         <div id="calendar" class="card shadow-sm p-3" style="min-height: 500px;">
+          <!-- Calendar will render here -->
         </div>
       </div>
     </div>
   </div>
 
-  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const goalSelect = document.getElementById('goalSelect');
+      const taskLists = document.querySelectorAll('.task-list');
 
+      goalSelect?.addEventListener('change', () => {
+        const selectedIndex = goalSelect.value;
 
-
+        taskLists.forEach(list => {
+          list.style.display = (list.dataset.goalIndex === selectedIndex) ? 'block' : 'none';
+        });
+      });
+    });
+  </script>
 </body>
-
 
 <%- include('../partials/footer.ejs') %>
