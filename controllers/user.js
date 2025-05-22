@@ -59,32 +59,78 @@ router.get('/newTask', async (req, res) => {
 });
 
 // catch the new task and post it
+const dayjs = require('dayjs');
+
 router.post('/newTask', async (req, res) => {
   try {
     const goal = await Goal.findById(req.body.goalId);
 
-    // Convert form values
-    const newTask = {
-      title: req.body.title,
-      start: new Date(req.body.start), // ✅ Convert to Date
-      end: new Date(req.body.end),     // ✅ Convert to Date
-      allDay: req.body.allDay === 'on',
+    const {
+      title,
+      start,
+      end,
+      allDay,
+      repeats,
+      repeatDuration,
+      notes,
+      location,
+      repeatUntil,
+      weekdaysOnly
+    } = req.body;
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const repeat = repeats === 'on';
+    const untilDate = repeatUntil ? new Date(repeatUntil) : null;
+    const weekdays = weekdaysOnly === 'on';
+
+    const createTask = (s, e) => ({
+      title,
+      start: s,
+      end: e,
+      allDay: allDay === 'on',
       isCompleted: false,
-      repeats: req.body.repeats === 'on',
-      repeatDuration: req.body.repeatDuration || null,
-      notes: req.body.notes || '',
-      location: req.body.location || ''
-    };
+      repeats: repeat,
+      repeatDuration: repeat ? repeatDuration : null,
+      notes: notes || '',
+      location: location || ''
+    });
 
-    goal.task.push(newTask);
+    goal.task.push(createTask(startDate, endDate));
+
+    if (repeat && repeatDuration && untilDate) {
+      let current = dayjs(startDate);
+      const originalDuration = dayjs(endDate).diff(dayjs(startDate), 'minute');
+
+      while (true) {
+        if (repeatDuration === 'daily') {
+          current = current.add(1, 'day');
+        } else if (repeatDuration === 'weekly') {
+          current = current.add(1, 'week');
+        } else if (repeatDuration === 'monthly') {
+          current = current.add(1, 'month');
+        }
+
+        if (current.toDate() > untilDate) break;
+
+        // Skip weekends if "Weekdays only" is checked
+        if (weekdays && [0, 6].includes(current.day())) continue;
+
+        const newStart = current.toDate();
+        const newEnd = dayjs(newStart).add(originalDuration, 'minute').toDate();
+
+        goal.task.push(createTask(newStart, newEnd));
+      }
+    }
+
     await goal.save();
-
     res.redirect('/user/index');
   } catch (err) {
     console.error(err);
     res.status(500).send('Failed to create task.');
   }
 });
+
 
 
 // response to edit task button

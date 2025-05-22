@@ -7,11 +7,13 @@
     <label for="title">Title:</label>
     <input type="text" name="title" placeholder="Task Title" required>
 
-    <label for="start">Start Date & Time:</label>
-    <input type="datetime-local" name="start" required>
+    <div class="time-fields">
+        <label for="start">Start Date & Time:</label>
+        <input type="datetime-local" name="start" required>
 
-    <label for="end">End Date & Time:</label>
-    <input type="datetime-local" name="end" required>
+        <label for="end">End Date & Time:</label>
+        <input type="datetime-local" name="end" required>
+    </div>
     
     
 
@@ -21,12 +23,7 @@
     <label for="location">Location:</label>
     <input type="text" name="location" placeholder="Location (optional)">
 
-    <div class="checkbox-group">
-        <label>
-            <input type="checkbox" name="allDay" id="allDay">
-            is this an all day event?
-        </label>
-    </div>
+
 
     <div class="checkbox-group">
         <label>
@@ -43,9 +40,18 @@
         <option value="monthly">Monthly</option>
     </select>
 
+    <label for="repeatUntil">Repeat Until:</label>
+    <input type="date" name="repeatUntil">
+    
+    <label class="checkbox-group">
+        <input type="checkbox" name="weekdaysOnly">
+            Weekdays Only
+    </label>
+
+
 
     <select name="goalId" required>
-        <option value="">what Goal does this task support?</option>
+        <option value="">What goal does this task support?</option>
         <% goals.forEach(goal => { %>
             <option value="<%= goal._id %>"><%= goal.name %> (<%= goal.Type %>)</option>
         <% }) %>
@@ -68,6 +74,8 @@
 
     repeatsCheckbox.addEventListener('change', toggleRepeatDuration);
     toggleRepeatDuration(); 
+
+    
 
 
 </script>
