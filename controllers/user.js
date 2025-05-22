@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Goal = require('../models/goals');
-
+const dayGridPlugin = require('@fullcalendar/daygrid')
 // Middleware used to protect routes that need a logged in user
 const ensureLoggedIn = require('../middleware/ensure-logged-in');
 
@@ -9,7 +9,7 @@ const ensureLoggedIn = require('../middleware/ensure-logged-in');
 router.use(ensureLoggedIn);
 
 // ALL paths start with '/user'
-
+console.log(dayGridPlugin);
 // index action
 //routes to profile home page
 router.get('/index', async (req, res) => {
@@ -29,7 +29,7 @@ router.get('/index', async (req, res) => {
     }))
   );
 
-  res.render('user/index.ejs', { goals, tasks });
+  res.render('user/index.ejs', { goals, tasks, dayGridPlugin });
 });
 
 
