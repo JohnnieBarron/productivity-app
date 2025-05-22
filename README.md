@@ -4,7 +4,7 @@ ElevateSelf is a productivity web app designed to help users set meaningful goal
 
 ## 🧠 Background
 
-The app was built to support better goal-setting habits and time management by combining task planning with calendar visualization. It's ideal for individuals who want to level up their productivity, track progress, and maintain focus over time.
+The app was built to support better goal-setting habits and time management by combining task planning with calendar visualization. It's ideal for individuals who want to level up their productivity, track progress, and maintain focus over time. The idea for this app came to be because I have severe ADHA, the primary symptom being executive dysfunctin. The method I have found for managing this is by creating specific task with specific times to have this done by, I made ElevateSelf to help with this. It enables the creation and organization of Goals and task and automaticaly organizes them by when they need done helping visualizes your schedule while offereing positive feed back every time you complete a task.
 
 ## 🖼️ Screenshot
 
