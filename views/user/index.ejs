@@ -9,78 +9,66 @@
 
     
     
+        <div class="row"></div>
+       <!-- Left Column: Goals and Tasks -->
+      <div class="col-lg-5 mb-4">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title">Select a Goal</h3>
 
-    <div class="left-column">
-
-        <div class="goals">
-            <h3>Select a Goal</h3>
             <% if (goals.length > 0) { %>
-                <select id="goalSelect">
-                    <option value="">--Choose a Goal--</option>
-                    <% goals.forEach((goal, index) => { %>
-                        <option value="<%= index %>"><%= goal.name %> (<%= goal.Type %>)</option>
-                    <% }) %>
-                </select>
+              <select id="goalSelect" class="form-select mb-3">
+                <option value="">-- Choose a Goal --</option>
+                <% goals.forEach((goal, index) => { %>
+                  <option value="<%= index %>"><%= goal.name %> (<%= goal.Type %>)</option>
+                <% }) %>
+              </select>
             <% } else { %>
-                <p>You have no goals yet.</p>
+              <p class="text-muted">You have no goals yet.</p>
             <% } %>
-            <br>
-            <a href="/user/goalsIndex"><button type="button" class="btn btn-success">Manage my goals</button></a>
-            
+
+            <a href="/user/goalsIndex" class="btn btn-success w-100">Manage my goals</a>
+          </div>
         </div>
 
-        <div class="taskbar">
-            <h3>Tasks</h3>
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title">Tasks</h3>
 
             <% goals.forEach((goal, index) => { %>
-                <div class="task-list" data-goal-index="<%= index %>" style="display: none;">
-                    <% if (goal.task && goal.task.length > 0) { %>
-                        <ul class="taskbar">
-                            <% goal.task.forEach(task => { %>
-                                <li>Your task: <%= task.title %> (Due: <%= task.end %>)</li>
-                            <% }) %>
-                        </ul>
-                    <% } else { %>
-                        <p>No tasks for goal "<%= goal.name %>" yet.</p>
-                    <% } %>
-                </div>
+              <div class="task-list" data-goal-index="<%= index %>" style="display: none;">
+                <% if (goal.task && goal.task.length > 0) { %>
+                  <ul class="list-group mb-3">
+                    <% goal.task.forEach(task => { %>
+                      <li class="list-group-item">
+                        <strong>Your task:</strong> <%= task.title %> 
+                        <% if(task.end){ %>
+                          <span class="text-muted">(Due: <%= new Date(task.end).toLocaleDateString() %>)</span>
+                        <% } %>
+                      </li>
+                    <% }) %>
+                  </ul>
+                <% } else { %>
+                  <p class="text-muted">No tasks for goal "<%= goal.name %>" yet.</p>
+                <% } %>
+              </div>
             <% }) %>
 
-            <a href="/user/task/index"><button type="button" class="btn btn-success">Manage my Task</button></a>
-            <br>
-            <a href="/user/newTask"><button type="button" class="btn btn-success">New Task</button></a>
+            <a href="/user/task/index" class="btn btn-success w-100 mb-2">Manage my Tasks</a>
+            <a href="/user/newTask" class="btn btn-success w-100">New Task</a>
+          </div>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const goalSelect = document.getElementById('goalSelect');
-                const taskLists = document.querySelectorAll('.task-list');
-
-                goalSelect?.addEventListener('change', () => {
-                    const selectedIndex = goalSelect.value;
-
-                    taskLists.forEach(list => {
-                        if (list.dataset.goalIndex === selectedIndex) {
-                            list.style.display = 'block';
-                        } else {
-                            list.style.display = 'none';
-                        }
-                    });
-                });
-            });
-        </script>
+      </div>
 
 
+
+          <!-- Right Column: Calendar -->
+      <div class="col-lg-7">
+        <div id="calendar" class="card shadow-sm p-3" style="min-height: 500px;">
+        </div>
+      </div>
     </div>
-
-
-
-    <div class="right-column">
-         <div id='calendar'></div>
-    </div>
-
-
-</div>
+  </div>
 
   
 
