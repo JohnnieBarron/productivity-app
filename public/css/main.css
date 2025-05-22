@@ -147,8 +147,11 @@ button:hover {
 }
 
 .left-column {
-  
-  width: 40vmin;
+  border: #333;
+  border-style: solid;
+  width: 38vmin;
+  margin-right: 1vmin;
+  background: rgb(168, 168, 168);
 }
 
 .goals{
@@ -174,5 +177,14 @@ height: 100%;
 
 .fc .fc-scrollgrid-liquid {
   height: 85%;
+}
+
+
+#calendar {
+  max-width: 900px;
+  margin: 40px auto;
+  border: 1px solid #ccc; /* Optional: to see the box */
+  padding: 10px;
+  height: 600px; /* ✅ THIS IS THE IMPORTANT PART */
 }
 
