@@ -60,13 +60,32 @@ router.get('/newTask', async (req, res) => {
 
 // catch the new task and post it
 router.post('/newTask', async (req, res) => {
-  const goal = await Goal.findById(req.body.goalId)
-  req.body.allDay = req.body.allDay === 'on';
-  goal.task.push(req.body);
-  await goal.save();
-  
-  res.redirect('/user/index');
+  try {
+    const goal = await Goal.findById(req.body.goalId);
+
+    // Convert form values
+    const newTask = {
+      title: req.body.title,
+      start: new Date(req.body.start), // ✅ Convert to Date
+      end: new Date(req.body.end),     // ✅ Convert to Date
+      allDay: req.body.allDay === 'on',
+      isCompleted: false,
+      repeats: req.body.repeats === 'on',
+      repeatDuration: req.body.repeatDuration || null,
+      notes: req.body.notes || '',
+      location: req.body.location || ''
+    };
+
+    goal.task.push(newTask);
+    await goal.save();
+
+    res.redirect('/user/index');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to create task.');
+  }
 });
+
 
 // response to edit task button
 router.get('/task/:id/edit', async (req, res) => {

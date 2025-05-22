@@ -21,16 +21,19 @@
     <label for="location">Location:</label>
     <input type="text" name="location" placeholder="Location (optional)">
 
+    <div class="checkbox-group">
+        <label>
+            <input type="checkbox" name="allDay" id="allDay">
+            is this an all day event?
+        </label>
+    </div>
 
-    <label>
-        <input type="checkbox" name="allDay" id="allDay">
-        is this an all day event?
-    </label>
-
-    <label>
-        <input type="checkbox" name="repeats" id="repeatsCheckbox">
-        Repeats
-    </label>
+    <div class="checkbox-group">
+        <label>
+            <input type="checkbox" name="repeats" id="repeatsCheckbox">
+            Repeats
+        </label>
+    </div>
 
 
     <select name="repeatDuration" id="repeatDurationSelect" required>
