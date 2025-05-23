@@ -10,8 +10,8 @@ The app was built to support better goal-setting habits and time management by c
 
 *Add your screenshots here once available.*
 
-![Screenshot Placeholder](/images/1.PNG)
-![Screenshot Placeholder](/images/Capture.PNG)
+![alt text](public/images/Capture.PNG)
+![ss](public/images/1.PNG)
 
 ## 🚀 Technologies Used
 
