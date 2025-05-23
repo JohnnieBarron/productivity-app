@@ -8,7 +8,7 @@ The app was built to support better goal-setting habits and time management by c
 
 ## 🖼️ Screenshot
 
-*Add your screenshots here once available.*
+
 
 ![alt text](public/images/Capture.PNG)
 ![ss](public/images/1.PNG)
