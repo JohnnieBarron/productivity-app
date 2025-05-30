@@ -38,6 +38,10 @@ Here are some features planned for future versions of Elevate:
 - **KPI Tracking** – Measure progress on goals with visual indicators and stats.
 - **Community Page** – Connect with other users, share goals, and support one another’s growth.
 
+Known bugs
+- notes are not displayed
+
 ---
 
 Feel free to fork this project, contribute, or provide feedback!
+

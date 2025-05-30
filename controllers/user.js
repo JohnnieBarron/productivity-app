@@ -9,7 +9,6 @@ const ensureLoggedIn = require('../middleware/ensure-logged-in');
 router.use(ensureLoggedIn);
 
 // ALL paths start with '/user'
-console.log(dayGridPlugin);
 // index action
 //routes to profile home page
 router.get('/index', async (req, res) => {
