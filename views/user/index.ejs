@@ -2,100 +2,139 @@
 
 <body>
 
-     <script>
+  <script>
+    <% if (typeof tasks !== 'undefined') { %>
+      const tasks = <%- JSON.stringify(tasks) %>;
+    <% } else { %>
+      const tasks = [];
+    <% } %>
 
-        <% if (typeof tasks !== 'undefined') { %>
-            const tasks = <%- JSON.stringify(tasks) %>;
-          <% } else { %>
-            const tasks = [];
-          <% } %>
-          
-          
-          <% if (typeof dayGridPlugin !== 'undefined') { %>
-              const dayGridPlugin = <%- JSON.stringify(dayGridPlugin) %>;
-            <% } else { %>
-              const dayGridPlugin = null;
-            <% } %>
+    <% if (typeof dayGridPlugin !== 'undefined') { %>
+      const dayGridPlugin = <%- JSON.stringify(dayGridPlugin) %>;
+    <% } else { %>
+      const dayGridPlugin = null;
+    <% } %>
 
-
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          plugins: FullCalendar.dayGrid,
-          initialView: 'dayGridMonth',
-          events: tasks,
-          headerToolbar: {
-            left: 'prev,next',
-            center: 'title',
-            right: 'dayGridDay,dayGridWeek,dayGridMonth' 
-          }
-        });
-        calendar.render();
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: FullCalendar.dayGrid,
+        initialView: 'dayGridMonth',
+        events: tasks,
+        headerToolbar: {
+          left: 'prev,next',
+          center: 'title',
+          right: 'dayGridDay,dayGridWeek,dayGridMonth'
+        }
       });
+      calendar.render();
+    });
+  </script>
 
+  <div class="page-container">
+    <h1 class="welcome-title">Welcome, <%= user.name %></h1>
 
+    <div class="layout-flex">
+      <!-- Left Column -->
+      <div class="left-panel">
 
-    </script>
+        <section class="goal-selection">
+          <h3>Select a Goal</h3>
 
+          <% if (goals.length > 0) { %>
+            <select id="goalSelect" class="goal-select">
+              <option value="">-- Choose a Goal --</option>
+              <% goals.forEach((goal, index) => { %>
+                <option value="<%= index %>"><%= goal.name %> (<%= goal.Type %>)</option>
+              <% }) %>
+            </select>
+          <% } else { %>
+            <p class="no-goals-message">You have no goals yet.</p>
+          <% } %>
 
-  <div class="container">
-    <h1 class="mb-4">Welcome, <%= user.name %></h1>
+          <a href="/user/goalsIndex" class="link-manage-goals">Manage my goals</a>
+        </section>
 
-    <div class="row">
-      <!-- Left Column: Goals and Tasks -->
-      <div class="col-lg-5 mb-4">
-        <div class="card mb-4 shadow-sm">
-          <div class="card-body">
-            <h3 class="card-title">Select a Goal</h3>
+        <section class="kpi-section">
+          <h3>Task Completion KPIs</h3>
 
-            <% if (goals.length > 0) { %>
-              <select id="goalSelect" class="form-select mb-3">
-                <option value="">-- Choose a Goal --</option>
-                <% goals.forEach((goal, index) => { %>
-                  <option value="<%= index %>"><%= goal.name %> (<%= goal.Type %>)</option>
-                <% }) %>
-              </select>
-            <% } else { %>
-              <p class="text-muted">You have no goals yet.</p>
-            <% } %>
+          <% if (goals.length > 0) { %>
+            <ul class="kpi-list">
+              <% 
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
 
-            <a href="/user/goalsIndex" class="btn btn-success w-100">Manage my goals</a>
-          </div>
-        </div>
+                goals.forEach(goal => {
+                  const dueTasks = goal.task.filter(task => {
+                    const dueDate = new Date(task.end);
+                    dueDate.setHours(0, 0, 0, 0);
+                    return dueDate <= today;
+                  });
 
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h3 class="card-title">Tasks</h3>
+                  const totalDue = dueTasks.length;
+                  const completedDue = dueTasks.filter(task => task.isCompleted).length;
+                  const completionRate = totalDue === 0 ? 0 : Math.round((completedDue / totalDue) * 100);
+              %>
+                <li class="kpi-item">
+                  <strong><%= goal.name %>:</strong> <%= completionRate %>% completion
+                </li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p class="no-kpi-message">No goals available to calculate KPIs.</p>
+          <% } %>
+        </section>
 
-            <% goals.forEach((goal, index) => { %>
-              <div class="task-list" data-goal-index="<%= index %>" style="display: none;">
-                <% if (goal.task && goal.task.length > 0) { %>
-                  <ul class="list-group mb-3">
-                    <% goal.task.forEach(task => { %>
-                      <li class="list-group-item">
-                        <strong>Your task:</strong> <%= task.title %> 
-                        <% if(task.end){ %>
-                          <span class="text-muted">(Due: <%= new Date(task.end).toLocaleDateString() %>)</span>
-                        <% } %>
-                      </li>
-                    <% }) %>
-                  </ul>
-                <% } else { %>
-                  <p class="text-muted">No tasks for goal "<%= goal.name %>" yet.</p>
-                <% } %>
-              </div>
-            <% }) %>
+        <section class="tasks-section">
+          <h3>Tasks Due Today</h3>
 
-            <a href="/user/task/index" class="btn btn-success w-100 mb-2">Manage my Tasks</a>
-            <a href="/user/newTask" class="btn btn-success w-100">New Task</a>
-          </div>
-        </div>
+          <% 
+            function isToday(dateString) {
+              if (!dateString) return false;
+              const taskDate = new Date(dateString);
+              const today = new Date();
+              return taskDate.getDate() === today.getDate() &&
+                     taskDate.getMonth() === today.getMonth() &&
+                     taskDate.getFullYear() === today.getFullYear();
+            }
+          %>
+
+          <% goals.forEach((goal, index) => {
+              const tasksDueToday = goal.task.filter(task => isToday(task.end));
+          %>
+            <div class="task-list" data-goal-index="<%= index %>" style="display: none;">
+              <% if(tasksDueToday.length > 0) { %>
+                <ul class="task-list-ul">
+                  <% tasksDueToday.forEach(task => { %>
+                    <li class="task-list-item">
+                      <strong>Your task:</strong> <%= task.title %> 
+                      <span class="task-due-date">(Due: <%= new Date(task.end).toLocaleDateString() %>)</span>
+
+                      <% if (!task.isCompleted) { %>
+                        <form method="POST" action="/user/tasks/<%= task._id %>/complete" class="complete-task-form">  
+                          <button type="submit" class="btn-complete-task">Complete</button>
+                        </form>
+                      <% } else { %>
+                        <span class="task-completed-label">Completed</span>
+                      <% } %>
+                    </li>
+                  <% }) %>
+                </ul>
+              <% } else { %>
+                <p class="no-tasks-message">No tasks due today for goal "<%= goal.name %>".</p>
+              <% } %>
+            </div>
+          <% }) %>
+
+          <a href="/user/task/index" class="link-manage-tasks">Manage my Tasks</a>
+          <a href="/user/newTask" class="link-new-task">New Task</a>
+        </section>
+
       </div>
 
-      <!-- Right Column: Calendar -->
-      <div class="col-lg-7">
-        <div id="calendar" class="card shadow-sm p-3" style="min-height: 500px;">
-          <!-- Calendar will render here -->
+      <div class="right-panel">
+        <div id="calendar" class="calendar-container">
+          
         </div>
       </div>
     </div>
@@ -115,6 +154,7 @@
       });
     });
   </script>
+
 </body>
 
 <%- include('../partials/footer.ejs') %>

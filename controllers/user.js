@@ -181,6 +181,35 @@ router.get('/task/index', async (req, res) => {
 });
 
 
+// Mark a task as completed
+router.post('/tasks/:taskId/complete', async (req, res) => {
+  try {
+    const taskId = req.params.taskId;
+    const goal = await Goal.findOne({ 'task._id': taskId, user: req.user._id });
+
+    if (!goal) {
+      return res.status(404).send('Goal or task not found');
+    }
+
+    const task = goal.task.id(taskId);
+    if (!task) {
+      return res.status(404).send('Task not found');
+    }
+
+    task.isCompleted = true;
+
+    await goal.save();
+
+    res.redirect('/user/index');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+
+
+
 
 
 module.exports = router;
