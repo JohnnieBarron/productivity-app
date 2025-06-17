@@ -1,19 +1,27 @@
 <%- include('../partials/header.ejs') %>
 
-<h1>Sign Up!</h1>
+<div class="auth-container">
+  <h1 class="auth-title">Sign Up!</h1>
 
-<form action="/auth/sign-up" method="POST">
-  <label for="name">Name:</label>
-  <input type="text" name="name" id="name" />
-  <label for="email">Email:</label>
-  <input type="email" name="email" id="email" />
-  <label for="password">Password:</label>
-  <input type="password" name="password" id="password" />
-  <label for="confirmPassword">Confirm Password:</label>
-  <input type="password" name="confirmPassword" id="confirmPassword" />
-  <button type="submit">SIGN UP</button>
-</form>
+  <form class="auth-form" action="/auth/sign-up" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" required />
 
-<p class="error-msg"><%= error %></p>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required />
+
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required />
+
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" name="confirmPassword" id="confirmPassword" required />
+
+    <button type="submit" class="btn primary">Sign Up</button>
+  </form>
+
+  <% if (error) { %>
+    <p class="error-msg"><%= error %></p>
+  <% } %>
+</div>
 
 <%- include('../partials/footer.ejs') %>

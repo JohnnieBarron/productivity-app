@@ -200,7 +200,7 @@ router.post('/tasks/:taskId/complete', async (req, res) => {
 
     await goal.save();
 
-    res.redirect('/user/index');
+    res.redirect('/user/task/index');
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');

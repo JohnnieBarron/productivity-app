@@ -1,160 +1,138 @@
 <%- include('../partials/header.ejs') %>
 
-<body>
+<div class="page-container">
+  <h1 class="welcome-title">Welcome, <%= user.name %></h1>
 
-  <script>
-    <% if (typeof tasks !== 'undefined') { %>
-      const tasks = <%- JSON.stringify(tasks) %>;
-    <% } else { %>
-      const tasks = [];
-    <% } %>
+  <div class="layout-flex">
+    <!-- Left Column -->
+    <div class="left-panel">
+      <section class="goal-selection">
+        <h3>Select a Goal</h3>
 
-    <% if (typeof dayGridPlugin !== 'undefined') { %>
-      const dayGridPlugin = <%- JSON.stringify(dayGridPlugin) %>;
-    <% } else { %>
-      const dayGridPlugin = null;
-    <% } %>
+        <% if (goals.length > 0) { %>
+          <select id="goalSelect" class="goal-select">
+            <option value="">-- Choose a Goal --</option>
+            <% goals.forEach((goal, index) => { %>
+              <option value="<%= index %>"><%= goal.name %> (<%= goal.Type %>)</option>
+            <% }) %>
+          </select>
+        <% } else { %>
+          <p class="no-goals-message">You have no goals yet.</p>
+        <% } %>
 
-    document.addEventListener('DOMContentLoaded', function() {
-      var calendarEl = document.getElementById('calendar');
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: FullCalendar.dayGrid,
-        initialView: 'dayGridMonth',
-        events: tasks,
-        headerToolbar: {
-          left: 'prev,next',
-          center: 'title',
-          right: 'dayGridDay,dayGridWeek,dayGridMonth'
-        }
-      });
-      calendar.render();
-    });
-  </script>
+        <a href="/user/goalsIndex" class="link-manage-goals">Manage my goals</a>
+      </section>
 
-  <div class="page-container">
-    <h1 class="welcome-title">Welcome, <%= user.name %></h1>
+      <section class="kpi-section">
+        <h3>Task Completion KPIs</h3>
 
-    <div class="layout-flex">
-      <!-- Left Column -->
-      <div class="left-panel">
-
-        <section class="goal-selection">
-          <h3>Select a Goal</h3>
-
-          <% if (goals.length > 0) { %>
-            <select id="goalSelect" class="goal-select">
-              <option value="">-- Choose a Goal --</option>
-              <% goals.forEach((goal, index) => { %>
-                <option value="<%= index %>"><%= goal.name %> (<%= goal.Type %>)</option>
-              <% }) %>
-            </select>
-          <% } else { %>
-            <p class="no-goals-message">You have no goals yet.</p>
-          <% } %>
-
-          <a href="/user/goalsIndex" class="link-manage-goals">Manage my goals</a>
-        </section>
-
-        <section class="kpi-section">
-          <h3>Task Completion KPIs</h3>
-
-          <% if (goals.length > 0) { %>
-            <ul class="kpi-list">
-              <% 
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-
-                goals.forEach(goal => {
-                  const dueTasks = goal.task.filter(task => {
-                    const dueDate = new Date(task.end);
-                    dueDate.setHours(0, 0, 0, 0);
-                    return dueDate <= today;
-                  });
-
-                  const totalDue = dueTasks.length;
-                  const completedDue = dueTasks.filter(task => task.isCompleted).length;
-                  const completionRate = totalDue === 0 ? 0 : Math.round((completedDue / totalDue) * 100);
-              %>
-                <li class="kpi-item">
-                  <strong><%= goal.name %>:</strong> <%= completionRate %>% completion
-                </li>
-              <% }) %>
-            </ul>
-          <% } else { %>
-            <p class="no-kpi-message">No goals available to calculate KPIs.</p>
-          <% } %>
-        </section>
-
-        <section class="tasks-section">
-          <h3>Tasks Due Today</h3>
-
-          <% 
-            function isToday(dateString) {
-              if (!dateString) return false;
-              const taskDate = new Date(dateString);
+        <% if (goals.length > 0) { %>
+          <ul class="kpi-list">
+            <% 
               const today = new Date();
-              return taskDate.getDate() === today.getDate() &&
-                     taskDate.getMonth() === today.getMonth() &&
-                     taskDate.getFullYear() === today.getFullYear();
-            }
-          %>
+              today.setHours(0, 0, 0, 0);
+              goals.forEach(goal => {
+                const dueTasks = goal.task.filter(task => {
+                  const dueDate = new Date(task.end);
+                  dueDate.setHours(0, 0, 0, 0);
+                  return dueDate <= today;
+                });
+                const totalDue = dueTasks.length;
+                const completedDue = dueTasks.filter(task => task.isCompleted).length;
+                const completionRate = totalDue === 0 ? 0 : Math.round((completedDue / totalDue) * 100);
+            %>
+              <li class="kpi-item">
+                <strong><%= goal.name %>:</strong> <%= completionRate %>% completion
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="no-kpi-message">No goals available to calculate KPIs.</p>
+        <% } %>
+      </section>
 
-          <% goals.forEach((goal, index) => {
-              const tasksDueToday = goal.task.filter(task => isToday(task.end));
-          %>
-            <div class="task-list" data-goal-index="<%= index %>" style="display: none;">
-              <% if(tasksDueToday.length > 0) { %>
-                <ul class="task-list-ul">
-                  <% tasksDueToday.forEach(task => { %>
-                    <li class="task-list-item">
-                      <strong>Your task:</strong> <%= task.title %> 
-                      <span class="task-due-date">(Due: <%= new Date(task.end).toLocaleDateString() %>)</span>
+      <section class="tasks-section">
+        <h3>Tasks Due Today</h3>
 
-                      <% if (!task.isCompleted) { %>
-                        <form method="POST" action="/user/tasks/<%= task._id %>/complete" class="complete-task-form">  
-                          <button type="submit" class="btn-complete-task">Complete</button>
-                        </form>
-                      <% } else { %>
-                        <span class="task-completed-label">Completed</span>
-                      <% } %>
-                    </li>
-                  <% }) %>
-                </ul>
-              <% } else { %>
-                <p class="no-tasks-message">No tasks due today for goal "<%= goal.name %>".</p>
-              <% } %>
-            </div>
-          <% }) %>
+        <% 
+          function isToday(dateString) {
+            if (!dateString) return false;
+            const taskDate = new Date(dateString);
+            const today = new Date();
+            return taskDate.getDate() === today.getDate() &&
+                   taskDate.getMonth() === today.getMonth() &&
+                   taskDate.getFullYear() === today.getFullYear();
+          }
+        %>
 
+        <% goals.forEach((goal, index) => {
+            const tasksDueToday = goal.task.filter(task => isToday(task.end));
+        %>
+          <div class="task-list" data-goal-index="<%= index %>" style="display: none;">
+            <% if(tasksDueToday.length > 0) { %>
+              <ul class="task-list-ul">
+                <% tasksDueToday.forEach(task => { %>
+                  <li class="task-list-item">
+                    <strong>Your task:</strong> <%= task.title %> 
+                    <span class="task-due-date">(Due: <%= new Date(task.end).toLocaleDateString() %>)</span>
+
+                    <% if (!task.isCompleted) { %>
+                      <form method="POST" action="/user/tasks/<%= task._id %>/complete" class="complete-task-form">  
+                        <button type="submit" class="btn primary">Complete</button>
+                      </form>
+                    <% } else { %>
+                      <span class="task-completed-label">Completed</span>
+                    <% } %>
+                  </li>
+                <% }) %>
+              </ul>
+            <% } else { %>
+              <p class="no-tasks-message">No tasks due today for goal "<%= goal.name %>".</p>
+            <% } %>
+          </div>
+        <% }) %>
+
+        <div class="task-links">
           <a href="/user/task/index" class="link-manage-tasks">Manage my Tasks</a>
           <a href="/user/newTask" class="link-new-task">New Task</a>
-        </section>
-
-      </div>
-
-      <div class="right-panel">
-        <div id="calendar" class="calendar-container">
-          
         </div>
-      </div>
+      </section>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-panel">
+      <div id="calendar" class="calendar-container"></div>
     </div>
   </div>
+</div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const goalSelect = document.getElementById('goalSelect');
-      const taskLists = document.querySelectorAll('.task-list');
+<script>
+  const tasks = <%- JSON.stringify(tasks || []) %>;
 
-      goalSelect?.addEventListener('change', () => {
-        const selectedIndex = goalSelect.value;
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: FullCalendar.dayGrid,
+      initialView: 'dayGridMonth',
+      events: tasks,
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'dayGridDay,dayGridWeek,dayGridMonth'
+      }
+    });
+    calendar.render();
 
-        taskLists.forEach(list => {
-          list.style.display = (list.dataset.goalIndex === selectedIndex) ? 'block' : 'none';
-        });
+    const goalSelect = document.getElementById('goalSelect');
+    const taskLists = document.querySelectorAll('.task-list');
+
+    goalSelect?.addEventListener('change', () => {
+      const selectedIndex = goalSelect.value;
+      taskLists.forEach(list => {
+        list.style.display = (list.dataset.goalIndex === selectedIndex) ? 'block' : 'none';
       });
     });
-  </script>
-
-</body>
+  });
+</script>
 
 <%- include('../partials/footer.ejs') %>

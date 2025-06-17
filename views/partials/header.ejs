@@ -4,28 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
-  <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.17/index.global.min.js'></script>
-  <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.17/index.global.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.17/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.17/index.global.min.js"></script>
 
   <link rel="stylesheet" href="/css/main.css">
   <title>ElevateSelf</title>
 </head>
 <body>
-  <nav>
-    <div class="header">
-      <div class="nav-container">
-        <div class="logo">
-          <a href="/"><img src="/images/logo.png" alt="Logo" height="90"></a>
+  <nav class="navbar">
+    <div class="navbar-header">
+      <div class="navbar-container">
+        <div class="navbar-logo">
+          <a href="/"><img src="/images/logo.png" alt="Logo" class="logo-img"></a>
         </div>
-        <div class="nav-links">
+        <div class="navbar-links">
           <% if (user) { %>
-            <a href="/user/index"><button class="nav-button primary">Home</button></a>
-            <a href="/user/new"><button class="nav-button primary">Create a new Goal</button></a>
-            <a href="/auth/sign-out"><button class="nav-button danger">SIGN OUT</button></a>
+            <a href="/user/index"><button class="btn primary">Home</button></a>
+            <a href="/user/new"><button class="btn primary">Create a new Goal</button></a>
+            <a href="/auth/sign-out"><button class="btn danger">Sign Out</button></a>
           <% } else { %>
-            <a href="/auth/sign-up"><button class="nav-button primary">SIGN UP</button></a>
-            <a href="/auth/sign-in"><button class="nav-button primary">SIGN IN</button></a>
+            <a href="/auth/sign-up"><button class="btn primary">Sign Up</button></a>
+            <a href="/auth/sign-in"><button class="btn primary">Sign In</button></a>
           <% } %>
         </div>
       </div>

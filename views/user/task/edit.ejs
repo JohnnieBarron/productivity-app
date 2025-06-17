@@ -1,56 +1,66 @@
 <%- include('../../partials/header') %>
 
-    <h2>Update Task</h2>
+<div class="card-container">
+  <div class="card">
+    <h2 class="card-title">Update Task</h2>
 
-<form action="/user/tasks/<%= task._id %>?_method=PUT" method="POST">
+    <form action="/user/tasks/<%= task._id %>?_method=PUT" method="POST" class="task-form">
 
-    <label for="title">Title:</label>
-    <input type="text" name="title" value="<%= task.title %>" required>
+      <!-- Task Title -->
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" value="<%= task.title %>" required>
 
-    <label for="dueDate">Due Date:</label>
-    <input type="date" name="dueDate" value="<%= task.dueDate %>" required>
+      <!-- Due Date -->
+      <label for="dueDate">Due Date:</label>
+      <input type="date" id="dueDate" name="dueDate" value="<%= task.dueDate?.toISOString?.().slice(0, 10) %>" required>
 
-    <label for="notes">Notes:</label>
-    <textarea name="notes" placeholder="Notes (optional)"><%= task.notes %></textarea>
-    
-    <label for="location">Location:</label>
-    <input type="text" name="location" value="<%= task.location %>">
+      <!-- Notes -->
+      <label for="notes">Notes:</label>
+      <textarea id="notes" name="notes" placeholder="Notes (optional)"><%= task.notes %></textarea>
 
+      <!-- Location -->
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" value="<%= task.location %>">
 
+      <!-- Repeat Settings -->
+      <div class="form-group">
+        <label class="checkbox-inline">
+          <input 
+            type="checkbox" 
+            name="repeats" 
+            id="repeatsCheckbox"
+            <%= task.repeats ? "checked" : "" %>
+          >
+          Repeats
+        </label>
+      </div>
 
-    <label>
-        <input type="checkbox" name="repeats" id="repeatsCheckbox">
-        Repeats
-    </label>
+      <div class="form-group repeat-options">
+        <label for="repeatDuration">Repeat Interval:</label>
+        <select id="repeatDurationSelect" name="repeatDuration" <%= task.repeats ? "" : "disabled" %> required>
+          <option value="">Select repeat interval</option>
+          <option value="daily" <%= task.repeatDuration === 'daily' ? "selected" : "" %>>Daily</option>
+          <option value="weekly" <%= task.repeatDuration === 'weekly' ? "selected" : "" %>>Weekly</option>
+          <option value="monthly" <%= task.repeatDuration === 'monthly' ? "selected" : "" %>>Monthly</option>
+        </select>
+      </div>
 
-
-    <select name="repeatDuration" id="repeatDurationSelect" required>
-        <option value="">Select repeat interval</option>
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
-        <option value="monthly">Monthly</option>
-    </select>
-
-    <button type="submit">Update Task</button>
-</form>
+      <!-- Submit Button -->
+      <button type="submit" class="btn primary">Update Task</button>
+    </form>
+  </div>
+</div>
 
 <script>
-    //Disable repeatDuration unless "Repeats" is checked
-    const repeatsCheckbox = document.getElementById('repeatsCheckbox');
-    const repeatDurationSelect = document.getElementById('repeatDurationSelect');
+  const repeatsCheckbox = document.getElementById('repeatsCheckbox');
+  const repeatDurationSelect = document.getElementById('repeatDurationSelect');
 
-    function toggleRepeatDuration() {
-        repeatDurationSelect.disabled = !repeatsCheckbox.checked;
-    }
+  function toggleRepeatDuration() {
+    repeatDurationSelect.disabled = !repeatsCheckbox.checked;
+  }
 
-    repeatsCheckbox.addEventListener('change', toggleRepeatDuration);
-    toggleRepeatDuration(); 
+  repeatsCheckbox.addEventListener('change', toggleRepeatDuration);
+  toggleRepeatDuration();
 </script>
-
-</form>
-
-
-
-
 
 <%- include('../../partials/footer.ejs') %>

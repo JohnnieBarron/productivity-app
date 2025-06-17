@@ -1,39 +1,46 @@
 <%- include('../../partials/header') %>
 
-<body>
-  <div class="form-container">
-    <div class="form-card">
-      <div class="form-card-body">
-        <h2 class="form-title">Create a S.M.A.R.T. Goal</h2>
-        <p class="form-description">
-          The first step toward self-improvement and becoming your best self is setting a <strong>S.M.A.R.T.</strong> goal.
-          S.M.A.R.T. stands for <em>Specific, Measurable, Achievable, Relevant, and Time-Bound</em>.
-          <br><br>
-          I'll guide you through creating your first one. Let's begin with the first step: <strong>Specific</strong>.
-          <br><br>
-          Do you want your first goal to focus on improving your <strong>mind</strong> or your <strong>body</strong>?
-          (Don't worry if you have goals for both — you can always create more later!)
-        </p>
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-card-body">
+      <h2 class="form-title">Create a S.M.A.R.T. Goal</h2>
+      <p class="form-description">
+        The first step toward self-improvement and becoming your best self is setting a <strong>S.M.A.R.T.</strong> goal.
+        <br><br>
+        <strong>S.M.A.R.T.</strong> stands for <em>Specific, Measurable, Achievable, Relevant, and Time-Bound</em>.
+        <br><br>
+        Let's begin with the first step: <strong>Specific</strong>. Do you want your first goal to focus on improving your <strong>mind</strong> or your <strong>body</strong>?
+        <br><small>(Don’t worry, you can add more later!)</small>
+      </p>
 
-        <form action="/user" method="POST" class="goal-form">
-          <div class="form-group">
-            <label for="name" class="form-label">Name your goal (be Specific but concise):</label>
-            <input type="text" name="name" id="name" class="form-input" placeholder="e.g., Lose 10lbs, Learn Spanish" required>
-          </div>
+      <form action="/user" method="POST" class="goal-form">
+        <!-- Goal Name -->
+        <div class="form-group">
+          <label for="name" class="form-label">Name your goal (be specific but concise):</label>
+          <input 
+            type="text" 
+            name="name" 
+            id="name" 
+            class="form-input" 
+            placeholder="e.g., Lose 10lbs, Learn Spanish" 
+            required
+          >
+        </div>
 
-          <div class="form-group">
-            <label for="Type" class="form-label">Goal type:</label>
-            <select id="Type" name="Type" class="form-select" required>
-              <option value="mind" selected>Mind</option>
-              <option value="body">Body</option>
-            </select>
-          </div>
+        <!-- Goal Type -->
+        <div class="form-group">
+          <label for="Type" class="form-label">Goal type:</label>
+          <select id="Type" name="Type" class="form-select" required>
+            <option value="mind" selected>Mind</option>
+            <option value="body">Body</option>
+          </select>
+        </div>
 
-          <button type="submit" class="submit-button">Add New Goal</button>
-        </form>
-      </div>
+        <!-- Submit Button -->
+        <button type="submit" class="submit-button">Add New Goal</button>
+      </form>
     </div>
   </div>
-</body>
+</div>
 
 <%- include('../../partials/footer.ejs') %>

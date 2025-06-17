@@ -24,8 +24,14 @@
                         <% if (task.dueDate) { %>
                           <small class="task-due">Due: <%= new Date(task.dueDate).toLocaleDateString() %></small>
                         <% } %>
-                      </div>
 
+                        <% if (task.notes && task.notes.trim().length > 0) { %>
+                          <details class="task-notes">
+                            <summary>📝 Notes</summary>
+                            <p><%= task.notes %></p>
+                          </details>
+                        <% } %>
+                      </div>
                       <div class="task-actions">
                         <form action="/user/tasks/<%= task._id %>/complete" method="POST" class="task-form">
                           <button type="submit" class="btn-complete" title="Mark Complete">

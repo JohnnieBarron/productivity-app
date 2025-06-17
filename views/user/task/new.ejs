@@ -1,89 +1,86 @@
 <%- include('../../partials/header') %>
 
-    <h2>Add a New Task</h2>
+<div class="card-container">
+  <div class="card">
+    <h2 class="card-title">Add a New Task</h2>
 
-<form action="/user/newTask" method="POST">
+    <form action="/user/newTask" method="POST" class="task-form">
 
-    <label for="title">Title:</label>
-    <input type="text" name="title" placeholder="Task Title" required>
+      <!-- Task Title -->
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" placeholder="Task Title" required>
 
-    <div class="time-fields">
-        <label for="start">Start Date & Time:</label>
-        <input type="datetime-local" name="start" required>
+      <!-- Start & End Date -->
+      <div class="form-group double-input">
+        <div class="input-wrapper">
+          <label for="start">Start Date & Time:</label>
+          <input type="datetime-local" id="start" name="start" required>
+        </div>
+        <div class="input-wrapper">
+          <label for="end">End Date & Time:</label>
+          <input type="datetime-local" id="end" name="end" required>
+        </div>
+      </div>
 
-        <label for="end">End Date & Time:</label>
-        <input type="datetime-local" name="end" required>
-    </div>
-    
-    
+      <!-- Notes -->
+      <label for="notes">Notes:</label>
+      <textarea id="notes" name="notes" placeholder="Notes (optional)"></textarea>
 
-    <label for="notes">Notes:</label>
-    <textarea name="notes" placeholder="Notes (optional)"></textarea>
-    
-    <label for="location">Location:</label>
-    <input type="text" name="location" placeholder="Location (optional)">
+      <!-- Location -->
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" placeholder="Location (optional)">
 
-
-
-    <div class="checkbox-group">
-        <label>
-            <input type="checkbox" name="repeats" id="repeatsCheckbox">
-            Repeats
+      <!-- Repeat Settings -->
+      <div class="form-group">
+        <label class="checkbox-inline">
+          <input type="checkbox" id="repeatsCheckbox" name="repeats">
+          Repeats
         </label>
-    </div>
+      </div>
 
+      <div class="form-group repeat-options">
+        <label for="repeatDuration">Repeat Interval:</label>
+        <select id="repeatDurationSelect" name="repeatDuration" disabled required>
+          <option value="">Select repeat interval</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
 
-    <select name="repeatDuration" id="repeatDurationSelect" required>
-        <option value="">Select repeat interval</option>
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
-        <option value="monthly">Monthly</option>
-    </select>
+        <label for="repeatUntil">Repeat Until:</label>
+        <input type="date" id="repeatUntil" name="repeatUntil">
 
-    <label for="repeatUntil">Repeat Until:</label>
-    <input type="date" name="repeatUntil">
-    
-    <label class="checkbox-group">
-        <input type="checkbox" name="weekdaysOnly">
-            Weekdays Only
-    </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" name="weekdaysOnly">
+          Weekdays Only
+        </label>
+      </div>
 
-
-
-    <select name="goalId" required>
-        <option value="">What goal does this task support?</option>
+      <!-- Goal Selection -->
+      <label for="goalId">Which goal does this task support?</label>
+      <select id="goalId" name="goalId" required>
+        <option value="">-- Select a Goal --</option>
         <% goals.forEach(goal => { %>
-            <option value="<%= goal._id %>"><%= goal.name %> (<%= goal.Type %>)</option>
+          <option value="<%= goal._id %>"><%= goal.name %> (<%= goal.Type %>)</option>
         <% }) %>
-    </select>
+      </select>
 
-  
-
-
-    <button type="submit">Create Task</button>
-</form>
+      <!-- Submit Button -->
+      <button type="submit" class="btn primary">Create Task</button>
+    </form>
+  </div>
+</div>
 
 <script>
-    //Disable repeatDuration unless "Repeats" is checked
-    const repeatsCheckbox = document.getElementById('repeatsCheckbox');
-    const repeatDurationSelect = document.getElementById('repeatDurationSelect');
+  const repeatsCheckbox = document.getElementById('repeatsCheckbox');
+  const repeatDurationSelect = document.getElementById('repeatDurationSelect');
 
-    function toggleRepeatDuration() {
-        repeatDurationSelect.disabled = !repeatsCheckbox.checked;
-    }
+  function toggleRepeatDuration() {
+    repeatDurationSelect.disabled = !repeatsCheckbox.checked;
+  }
 
-    repeatsCheckbox.addEventListener('change', toggleRepeatDuration);
-    toggleRepeatDuration(); 
-
-    
-
-
+  repeatsCheckbox.addEventListener('change', toggleRepeatDuration);
+  toggleRepeatDuration();
 </script>
-
-</form>
-
-
-
-
 
 <%- include('../../partials/footer.ejs') %>
